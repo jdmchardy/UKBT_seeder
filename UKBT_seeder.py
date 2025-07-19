@@ -272,7 +272,7 @@ def main():
 
     st.markdown("Upload your input Excel file and set parameters to generate a seeded tournament list.")
 
-    uploaded_file = st.file_uploader("Upload input Excel file (.xlsx)", type=["xlsx"])
+    uploaded_file = st.file_uploader("Upload input Excel file (.xlsx)", type=["xlsx"], accept_multiple_files=False)
     cutoff_days = st.number_input("Cutoff Window (days)", min_value=1, value=365)
     num_teams = st.number_input("Number of Tournament Teams", min_value=2, value=16)
 
