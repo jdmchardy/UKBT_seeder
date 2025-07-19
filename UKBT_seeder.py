@@ -272,6 +272,16 @@ def main():
     st.title("UKBT Seeding App")
 
     st.markdown("Upload your input Excel file and set parameters to generate a seeded tournament list.")
+    st.markdown("A template for the player list required can be downloaded below.")
+    
+    # Display download button for template
+    with open("player_list_template.xlsx", "rb") as f:
+        st.download_button(
+            label="📥 Download Player List Template",
+            data=f,
+            file_name="Player_List_template.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
 
     uploaded_file = st.file_uploader("Upload input Excel file (.xlsx)", type=["xlsx"], accept_multiple_files=False)
     cutoff_days = st.number_input("Cutoff Window (days)", min_value=1, value=365)
