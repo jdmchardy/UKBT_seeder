@@ -192,7 +192,7 @@ def export2excel(output_path, seeded_df, player_ranking_points_df, UKBT_players,
         # Remove old output file if it exists
         if os.path.exists(output_path):
             os.remove(output_path)
-        seeded_df.to_excel(writer, sheet_name = "Team Seeding", index=False)
+        seeded_df.to_excel(output_path, sheet_name = "Team Seeding", index=False)
     else:
         seeded_df.to_excel(output_path, sheet_name = "Team Seeding", index=False)
         
