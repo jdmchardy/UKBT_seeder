@@ -23,7 +23,7 @@ import re
 import requests
 
 #Define main function
-def main_logic(input_path, output_path, cutoff_window, tournament_teams):
+def main_logic(input_path, output_path, cutoff_window, num_teams):
     
     #Build dataframe of teams from input file
     team_list = mk_team_list(input_path)
@@ -35,11 +35,10 @@ def main_logic(input_path, output_path, cutoff_window, tournament_teams):
     player_results_cutoff, player_ranking_points_df = mk_cutoff_results(cutoff_window, player_results, UKBT_players)
     #Make seeded dataframe
     seeded_df = mk_seeded_df(team_list, player_ranking_points_df)
-    print("test")
     #Export to excel
     export2excel(output_path, seeded_df, player_ranking_points_df, UKBT_players, player_results_cutoff)
     #Make the pool formatting
-    #filled_pools = mk_pools(seeded_df, tournament_teams)
+    #filled_pools = mk_pools(seeded_df, num_teams)
     
     return seeded_df #, filled_pools
     
@@ -190,8 +189,10 @@ def mk_seeded_df(team_list, player_ranking_points_df):
 def export2excel(output_path, seeded_df, player_ranking_points_df, UKBT_players, player_results_cutoff):
     #Export seeded list to excel
     if os.path.isfile(output_path) == True:
-        with pd.ExcelWriter(output_path, engine="openpyxl", mode="a", if_sheet_exists="overlay") as writer:
-            seeded_df.to_excel(writer, sheet_name = "Team Seeding", index=False)
+        # Remove old output file if it exists
+        if os.path.exists(output_path):
+            os.remove(output_path)
+        seeded_df.to_excel(writer, sheet_name = "Team Seeding", index=False)
     else:
         seeded_df.to_excel(output_path, sheet_name = "Team Seeding", index=False)
         
@@ -209,8 +210,8 @@ def export2excel(output_path, seeded_df, player_ranking_points_df, UKBT_players,
                 heading.to_excel(writer, sheet_name='Past Individual Results', header=False)
                 results.to_excel(writer, sheet_name='Past Individual Results', index=False, startrow=writer.sheets['Past Individual Results'].max_row)
             
-def mk_pools(seeded_df, tournament_teams):
-    if tournament_teams == 16:
+def mk_pools(seeded_df, num_teams):
+    if num_teams == 16:
         poolA = [1,8,9,16]
         poolB = [2,7,10,16]
         poolC = [3,6,11,14]
@@ -235,7 +236,7 @@ def mk_pools(seeded_df, tournament_teams):
                     heading.to_excel(writer, sheet_name='Pools', header=False)
                     pool_df.to_excel(writer, sheet_name='Pools', index=False, startrow=writer.sheets['Pools'].max_row)
 
-    elif tournament_teams == 24:
+    elif num_teams == 24:
         poolA = [1,12,13,24]
         poolB = [2,11,14,23]
         poolC = [3,10,15,22]
