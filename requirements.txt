@@ -1,0 +1,8 @@
+# Streamlit frontend dependencies
+streamlit
+pandas
+numpy
+mechanicalsoup
+beautifulsoup4
+openpyxl
+requests
