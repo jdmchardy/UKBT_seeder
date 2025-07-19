@@ -301,6 +301,11 @@ def main():
             with open(output_path, "rb") as f:
                 st.download_button("Download Seeded Excel", data=f, file_name="seeded_output.xlsx")
 
+            # Display seeded results directly below
+            df = pd.read_excel(output_path)
+            st.subheader("📊 Seeded Teams Order")
+            st.dataframe(df)
+
         except Exception as e:
             st.error(f"An error occurred: {e}")
 
