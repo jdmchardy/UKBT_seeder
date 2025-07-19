@@ -270,7 +270,7 @@ def mk_pools(seeded_df, num_teams):
 # ---- Streamlit Interface ----
 def main():
     st.title("UKBT Seeding App")
-    st.subheader("Upload your input Excel file and set parameters to generate a seeded tournament list.")
+    st.subheader("Upload player list excel file to generate seeding.")
     st.markdown("A template for the player list required can be downloaded below.")
     
     # Display download button for template
