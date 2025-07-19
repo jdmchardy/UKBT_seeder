@@ -278,7 +278,7 @@ def main():
     num_teams = st.number_input("Number of Tournament Teams", min_value=2, value=16)
 
     if st.button("Generate Seedings") and uploaded_file is not None:
-        input_path = "temp_input.xlsx"
+        input_path = "player_list.xlsx"
         output_path = "seeded_output.xlsx"
 
         # Save uploaded file temporarily
