@@ -269,8 +269,12 @@ def mk_pools(seeded_df, num_teams):
 
 # ---- Streamlit Interface ----
 def main():
-    st.image("UKBTlogo.png", width=150)
-    st.title("UKBT Seeding App")
+    col1, col2 = st.columns([2, 4])  # Adjust width ratio as needed
+    with col1:
+        st.image("UKBTlogo.png", width=150)  # Adjust width based on your logo
+    
+    with col2:
+        st.title("UKBT Seeding App")
     st.subheader("Upload player list excel file to generate seeding.")
     st.markdown("A template for the player list required can be downloaded below.")
     
