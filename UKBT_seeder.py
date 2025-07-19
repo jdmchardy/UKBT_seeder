@@ -270,8 +270,7 @@ def mk_pools(seeded_df, num_teams):
 # ---- Streamlit Interface ----
 def main():
     st.title("UKBT Seeding App")
-
-    st.markdown("Upload your input Excel file and set parameters to generate a seeded tournament list.")
+    st.subheader("Upload your input Excel file and set parameters to generate a seeded tournament list.")
     st.markdown("A template for the player list required can be downloaded below.")
     
     # Display download button for template
@@ -284,30 +283,36 @@ def main():
         )
 
     uploaded_file = st.file_uploader("Upload input Excel file (.xlsx)", type=["xlsx"], accept_multiple_files=False)
-    cutoff_days = st.number_input("Cutoff Window (days)", min_value=1, value=365)
-    num_teams = st.number_input("Number of Tournament Teams", min_value=2, value=16)
+    col1, col2 = st.columns(2)
+    with col1:
+        cutoff_days = st.number_input("Cutoff Window (days)", min_value=1, value=365, 
+                                      help="Number of days before today to consider for seeding")
+    with col2:
+        num_teams = st.number_input("Number of Tournament Teams", min_value=2, value=16)
 
     if st.button("Generate Seedings") and uploaded_file is not None:
-        input_path = "player_list.xlsx"
-        output_path = "seeded_output.xlsx"
-
-        # Save uploaded file temporarily
-        with open(input_path, "wb") as f:
-            f.write(uploaded_file.read())
-
-        try:
-            main_logic(input_path, output_path, int(cutoff_days), int(num_teams))
-
-            with open(output_path, "rb") as f:
-                st.download_button("Download Seeded Excel", data=f, file_name="seeded_output.xlsx")
-
-            # Display seeded results directly below
-            df = pd.read_excel(output_path)
-            st.subheader("📊 Seeded Teams Order")
-            st.dataframe(df)
-
-        except Exception as e:
-            st.error(f"An error occurred: {e}")
+        with st.spinner("Generating seedings..."):
+            input_path = "player_list.xlsx"
+            output_path = "seeded_output.xlsx"
+    
+            # Save uploaded file temporarily
+            with open(input_path, "wb") as f:
+                f.write(uploaded_file.read())
+    
+            try:
+                main_logic(input_path, output_path, int(cutoff_days), int(num_teams))
+                st.success("Seedings generated successfully!")
+    
+                with open(output_path, "rb") as f:
+                    st.download_button("Download Seeded Excel", data=f, file_name="seeded_output.xlsx")
+    
+                # Display seeded results directly below
+                df = pd.read_excel(output_path)
+                st.subheader("📊 Seeded Teams Order")
+                st.dataframe(df)
+    
+            except Exception as e:
+                st.error(f"An error occurred: {e}")
 
 if __name__ == "__main__":
     main()
